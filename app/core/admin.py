@@ -9,9 +9,9 @@ class UserAdmin(BaseUserAdmin):
     # Define the admin pages for users.
 
     ordering = ["id"]
-    list_display = ["email", "name"]
+    list_display = ["email", "name", "created_at", "updated_at"]
     fieldsets = (
-        (None, {'fields': ('email', 'password', 'name')}),
+        (None, {'fields': ('email', 'password', 'name', 'address')}),
         (
             _('Permissions'),
             {
@@ -34,6 +34,7 @@ class UserAdmin(BaseUserAdmin):
                 'password1',
                 'password2',
                 'name',
+                'address',
                 'is_active',
                 'is_staff',
                 'is_superuser',
