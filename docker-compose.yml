@@ -25,7 +25,7 @@ services:
   db:
     image: postgres:13-alpine
     volumes: 
-      - swapulous-db-data:/var/lib/postgresql/data    #change when different app container
+      - swap-db-data:/var/lib/postgresql/data    #change when different app container
     environment:
     - POSTGRES_DB=swapDB                              #change when different app container
     - POSTGRES_USER=swapDBuser                        #change when different app container
@@ -33,4 +33,4 @@ services:
 
 
 volumes:
-  swapulous-db-data:                                  #change when different app container
+  swap-db-data:                                  #change when different app container
