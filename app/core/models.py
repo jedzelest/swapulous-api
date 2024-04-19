@@ -36,9 +36,12 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
     # user in the system
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    bio = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
     isEmailConfirmed = models.BooleanField(default=False)
-    address = models.CharField(max_length=255, default="")
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
