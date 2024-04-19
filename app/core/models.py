@@ -6,6 +6,7 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 from helpers.models import TrackingModel
+import uuid
 
 
 class UserManager(BaseUserManager):
@@ -33,8 +34,10 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
     # user in the system
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
+    isEmailConfirmed = models.BooleanField(default=False)
     address = models.CharField(max_length=255, default="")
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
