@@ -32,18 +32,36 @@ class UserManager(BaseUserManager):
         return user
 
 
+class UserType (TrackingModel):
+    # Differentiates the type of User available in the system
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+
+
 class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
     # user in the system
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=255, unique=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
+    birth_date = models.CharField(max_length=255)
+    gender = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=255)
+    cover_photo_path = models.CharField(max_length=255)
+    profile_image = models.CharField(max_length=255)
     bio = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
-    isEmailConfirmed = models.BooleanField(default=False)
+    country = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    street = models.CharField(max_length=255)
+    zip_code = models.CharField(max_length=255)
+    is_first_login = models.BooleanField(default=True)
+    is_email_confirmed = models.BooleanField(default=False)
+    is_profile_changed = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    user_type = models.CharField(max_length=255, default="User")  # temporary
 
     objects = UserManager()
 

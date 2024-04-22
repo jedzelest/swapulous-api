@@ -45,3 +45,19 @@ class ModelTests(TestCase):
 
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_create_user_with_birth_date(self):
+        """ Test for creating a user with a birthdate. """
+        email = "test@example.com"
+        password = "testpass123"
+        birth_date = "August 18, 1999"
+        user = get_user_model().objects.create_user(
+            email=email,
+            password=password,
+            birth_date=birth_date,
+        )
+
+        self.assertEqual(user.email, email)
+        self.assertTrue(user.check_password(password))
+        self.assertEqual(user.birth_date, birth_date)
+        self.assertTrue(user.birth_date)

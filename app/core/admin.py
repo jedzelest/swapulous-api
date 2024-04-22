@@ -24,7 +24,7 @@ class UserAdmin(BaseUserAdmin):
             'last_name',
             'bio',
             'city',
-            'address'
+            'address',
             )}),
         (
             _('Permissions'),
@@ -33,7 +33,7 @@ class UserAdmin(BaseUserAdmin):
                     'is_active',
                     'is_staff',
                     'is_superuser',
-                    'isEmailConfirmed',
+                    'is_email_confirmed',
                 )
             }
         ),
@@ -56,10 +56,11 @@ class UserAdmin(BaseUserAdmin):
                 'is_active',
                 'is_staff',
                 'is_superuser',
-                'isEmailConfirmed',
+                'is_email_confirmed',
             )
         }),
     )
 
 
 admin.site.register(models.User, UserAdmin)
+admin.site.register(models.UserType)
