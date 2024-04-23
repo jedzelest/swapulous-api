@@ -29,7 +29,7 @@ services:
     environment:
     - POSTGRES_DB=swapDB                              #change when different app container
     - POSTGRES_USER=swapDBuser                        #change when different app container
-    - POSTGRES_PASSWORD=changeme                      #change when different app container
+    - POSTGRES_PASSWORD=changeme                       #change when different app container
 
 
 volumes:

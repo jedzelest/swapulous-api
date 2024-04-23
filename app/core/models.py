@@ -37,6 +37,9 @@ class UserType (TrackingModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.name
+
 
 class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
     # user in the system
@@ -48,7 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
     gender = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=255)
     cover_photo_path = models.CharField(max_length=255)
-    profile_image = models.CharField(max_length=255)
+    profile_image_path = models.CharField(max_length=255)
     bio = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
@@ -61,7 +64,8 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
     is_profile_changed = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    user_type = models.CharField(max_length=255, default="User")  # temporary
+    verification_code = models.CharField(max_length=10)
+    user_type = models.CharField(max_length=255)
 
     objects = UserManager()
 

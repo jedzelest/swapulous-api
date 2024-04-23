@@ -8,10 +8,10 @@ from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
-    # Django command to wait for database
+    """ Django command to wait for database. """
 
     def handle(self, *args, **options):
-        # Entry point for command
+        """ Entry point for command. """
         self.stdout.write('Waiting for database...')
         db_up = False
         while not db_up:
