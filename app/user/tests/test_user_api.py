@@ -48,6 +48,7 @@ class PublicUserApiTests(TestCase):
             'user_type': usertype.id,
         }
         res = self.client.post(CREATE_USER_URL, payload)
+        print(res.json())
         self.assertEqual(res.status_code, 201)
         user = get_user_model().objects.get(email=payload['email'])
         self.assertTrue(user.check_password(payload['password']))
