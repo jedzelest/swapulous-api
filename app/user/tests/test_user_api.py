@@ -11,6 +11,7 @@ from rest_framework.test import APIClient
 
 
 CREATE_USER_URL = reverse('user:create')
+TOKEN_URL = reverse('user:token')
 
 
 def create_user(**params):
@@ -48,7 +49,6 @@ class PublicUserApiTests(TestCase):
             'user_type': usertype.id,
         }
         res = self.client.post(CREATE_USER_URL, payload)
-        print(res.json())
         self.assertEqual(res.status_code, 201)
         user = get_user_model().objects.get(email=payload['email'])
         self.assertTrue(user.check_password(payload['password']))
@@ -111,3 +111,99 @@ class PublicUserApiTests(TestCase):
             email=payload['email']
         ).exists()
         self.assertFalse(user_exists)
+
+    def test_create_token_for_user(self):
+        """Test generates token for valid credentials."""
+        usertype = UserType.objects.create(name='User')
+        user_details = {
+            'email': 'test@example.com',
+            'password': 'testpass123',
+            'first_name': 'Test',
+            'last_name': 'User',
+            'birth_date': '08/18/1999',
+            'gender': 'Male',
+            'phone_number': '1211231',
+            'cover_photo_path': 'test_cover',
+            'profile_image_path': 'test_image',
+            'bio': 'test_bio',
+            'city': 'test_city',
+            'address': 'test_address',
+            'country': 'test_country',
+            'state': 'test_state',
+            'street': 'test_street',
+            'zip_code': '8000',
+            'verification_code': '12112',
+            'user_type': usertype,
+        }
+        create_user(**user_details)
+
+        payload = {
+            'email': user_details['email'],
+            'password': user_details['password'],
+        }
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertIn('token', res.data)
+        self.assertEqual(res.status_code, 200)
+
+    def test_create_token_bad_credentials(self):
+        """Test returns error if credentials invalid."""
+        usertype = UserType.objects.create(name='User')
+        user_details = {
+            'email': 'test@example.com',
+            'password': 'testpass123',
+            'first_name': 'Test',
+            'last_name': 'User',
+            'birth_date': '08/18/1999',
+            'gender': 'Male',
+            'phone_number': '1211231',
+            'cover_photo_path': 'test_cover',
+            'profile_image_path': 'test_image',
+            'bio': 'test_bio',
+            'city': 'test_city',
+            'address': 'test_address',
+            'country': 'test_country',
+            'state': 'test_state',
+            'street': 'test_street',
+            'zip_code': '8000',
+            'verification_code': '12112',
+            'user_type': usertype,
+        }
+        create_user(**user_details)
+
+        payload = {
+            'email': 'test@example.com',
+            'password': 'wrongpassword',
+        }
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertNotIn('token', res.data)
+        self.assertEqual(res.status_code, 400)
+
+    def test_create_token_blank_password(self):
+        """Test posting a blank password returns an error."""
+        usertype = UserType.objects.create(name='User')
+        payload = {
+            'email': 'test@example.com',
+            'password': '',
+            'first_name': 'Test',
+            'last_name': 'User',
+            'birth_date': '08/18/1999',
+            'gender': 'Male',
+            'phone_number': '1211231',
+            'cover_photo_path': 'test_cover',
+            'profile_image_path': 'test_image',
+            'bio': 'test_bio',
+            'city': 'test_city',
+            'address': 'test_address',
+            'country': 'test_country',
+            'state': 'test_state',
+            'street': 'test_street',
+            'zip_code': '8000',
+            'verification_code': '12112',
+            'user_type': usertype.id,
+        }
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertNotIn('token', res.data)
+        self.assertEqual(res.status_code, 400)
