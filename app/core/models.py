@@ -65,7 +65,7 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     verification_code = models.CharField(max_length=10)
-    user_type = models.CharField(max_length=255)
+    user_type = models.ForeignKey('UserType', on_delete=models.CASCADE)
 
     objects = UserManager()
 

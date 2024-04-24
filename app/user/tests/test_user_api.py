@@ -23,10 +23,10 @@ class PublicUserApiTests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.user_type = UserType.objects.create(name='User')
 
     def test_create_user_success(self):
         """Test creating a user is successful."""
+        usertype = UserType.objects.create(name='User')
         payload = {
             'email': 'test@example.com',
             'password': 'testpass123',
@@ -45,10 +45,9 @@ class PublicUserApiTests(TestCase):
             'street': 'test_street',
             'zip_code': '8000',
             'verification_code': '12112',
-            'user_type': 'User'
+            'user_type': usertype.id,
         }
         res = self.client.post(CREATE_USER_URL, payload)
-
         self.assertEqual(res.status_code, 201)
         user = get_user_model().objects.get(email=payload['email'])
         self.assertTrue(user.check_password(payload['password']))
@@ -56,6 +55,7 @@ class PublicUserApiTests(TestCase):
 
     def test_user_with_email_exists_error(self):
         """Test error returned if user with email exists."""
+        usertype = UserType.objects.create(name='User')
         payload = {
             'email': 'test@example.com',
             'password': 'testpass123',
@@ -74,7 +74,7 @@ class PublicUserApiTests(TestCase):
             'street': 'test_street',
             'zip_code': '8000',
             'verification_code': '12112',
-            'user_type': 'User'
+            'user_type': usertype,
         }
         create_user(**payload)
         res = self.client.post(CREATE_USER_URL, payload)
@@ -83,6 +83,7 @@ class PublicUserApiTests(TestCase):
 
     def test_password_too_short_error(self):
         """Test an error is returned if password is less than 5 chars."""
+        usertype = UserType.objects.create(name='User')
         payload = {
             'email': 'test@example.com',
             'password': 'pw',
@@ -101,7 +102,7 @@ class PublicUserApiTests(TestCase):
             'street': 'test_street',
             'zip_code': '8000',
             'verification_code': '12112',
-            'user_type': 'User'
+            'user_type': usertype.id,
         }
         res = self.client.post(CREATE_USER_URL, payload)
         self.assertEqual(res.status_code, 400)
