@@ -14,7 +14,8 @@ class UserAdmin(BaseUserAdmin):
         "last_name",
         "first_name",
         "created_at",
-        "updated_at"
+        "updated_at",
+        "user_type",
         ]
     fieldsets = (
         (None, {'fields': (

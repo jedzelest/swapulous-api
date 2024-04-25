@@ -180,3 +180,49 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(sub_category), sub_category.name)
+
+    # def test_create_item(self):
+    #     """Test for creating an item."""
+    #     usertype = UserType.objects.create(name='User')
+    #     payload = {
+    #         'email': 'test@example.com',
+    #         'password': 'testpass123',
+    #         'first_name': 'Test',
+    #         'last_name': 'User',
+    #         'birth_date': '08/18/1999',
+    #         'gender': 'Male',
+    #         'phone_number': '1211231',
+    #         'cover_photo_path': 'test_cover',
+    #         'profile_image_path': 'test_image',
+    #         'bio': 'test_bio',
+    #         'city': 'test_city',
+    #         'address': 'test_address',
+    #         'country': 'test_country',
+    #         'state': 'test_state',
+    #         'street': 'test_street',
+    #         'zip_code': '8000',
+    #         'verification_code': '12112',
+    #         'user_type': usertype,
+    #     }
+    #     user = get_user_model().objects.create_user(**payload)
+    #     category = models.Category.objects.create(name="Computer Parts")
+    #     sub_category = models.Sub_Category.objects.create(
+    #         category=category,
+    #         name='Hard Drive'
+    #     )
+    #     item = models.Item.objects.create(
+    #         isAvailable=True,
+    #         condition='New',
+    #         description='New item open for swap',
+    #         image_path='images/RTX.jpeg',
+    #         isFree=False,
+    #         name='RTX 1000-Test',
+    #         category=category,
+    #         sub_category=sub_category,
+    #         price=10000,
+    #         short_info='test product',
+    #         state='test state',
+    #         status='Active',
+    #         version="1.3",
+    #         user=user,
+    #     )

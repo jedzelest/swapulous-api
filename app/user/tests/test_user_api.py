@@ -246,6 +246,22 @@ class PrivateUserApiTests(TestCase):
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
+    def test_if_logged_in_user_is_User(self):
+        """Test if the logged in user is of type User."""
+        res = self.client.get(ME_URL)
+
+        self.assertEqual(res.status_code, 200)
+        user_type_name = self.user.user_type.name
+        self.assertEqual(user_type_name, "User")
+
+    def test_if_logged_in_user_is_not_Admin(self):
+        """Test if the logged in user is of type Admin."""
+        res = self.client.get(ME_URL)
+
+        self.assertEqual(res.status_code, 200)
+        user_type_name = self.user.user_type.name
+        self.assertNotEqual(user_type_name, "Admin")
+
     def test_retrieve_profile_success(self):
         """Test retrieving profile for logged in user."""
         res = self.client.get(ME_URL)
