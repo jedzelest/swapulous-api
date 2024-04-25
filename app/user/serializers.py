@@ -6,6 +6,7 @@ from django.contrib.auth import (
     authenticate,
     )
 from rest_framework import serializers
+from rest_framework.response import Response
 from django.utils.translation import gettext as _
 
 
@@ -35,6 +36,12 @@ class UserSerializer(serializers.ModelSerializer):
             user.save()
 
         return user
+
+    def delete(self, request, *args, **kwargs):
+        """Delete the user."""
+        user = self.get_object()
+        user.delete()
+        return Response({"message": "User deleted successfully"}, status=204)
 
 
 class AuthTokenSerializer(serializers.Serializer):

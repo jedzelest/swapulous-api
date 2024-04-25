@@ -31,3 +31,14 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         """Retrieve and return the authenticated user."""
         return self.request.user
+
+
+class DeleteUserView(generics.DestroyAPIView):
+    """Delete the authenticated user."""
+    serializer_class = UserSerializer
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        """Retrieve and return the authenticated user."""
+        return self.request.user
