@@ -291,7 +291,7 @@ class PrivateUserApiTests(TestCase):
         self.assertEqual(res.status_code, 200)
 
     def test_delete_user_profile(self):
-        """Test deleting the user profile."""
+        """Test for deleting the user profile."""
         res = self.client.delete(DELETE_URL)
 
         self.assertEqual(res.status_code, 204)

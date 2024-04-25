@@ -90,3 +90,5 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.UserType)
+admin.site.register(models.Category)
+admin.site.register(models.Sub_Category)

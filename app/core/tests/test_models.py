@@ -2,6 +2,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from core.models import UserType
+from core import models
 from django.urls import reverse
 
 CREATE_USER_URL = reverse('user:create')
@@ -159,3 +160,23 @@ class ModelTests(TestCase):
         self.assertTrue(user.check_password(payload['password']))
         self.assertEqual(user.birth_date, payload['birth_date'])
         self.assertTrue(user.birth_date)
+
+    def test_create_category(self):
+        """Test for creating a category is successful."""
+        category = models.Category.objects.create(
+            name='Computer Parts',
+        )
+
+        self.assertEqual(str(category), category.name)
+
+    def test_create_sub_category(self):
+        """Test for creating a sub-category is successful."""
+        category = models.Category.objects.create(
+            name='Computer Parts',
+        )
+        sub_category = models.Sub_Category.objects.create(
+            category=category,
+            name='Hard Drive',
+        )
+
+        self.assertEqual(str(sub_category), sub_category.name)

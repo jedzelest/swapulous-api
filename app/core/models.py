@@ -33,7 +33,7 @@ class UserManager(BaseUserManager):
 
 
 class UserType (TrackingModel):
-    # Differentiates the type of User available in the system
+    """Types of User in the system."""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
 
@@ -42,7 +42,7 @@ class UserType (TrackingModel):
 
 
 class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
-    # user in the system
+    """User in the system."""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=255, unique=True)
     first_name = models.CharField(max_length=255)
@@ -70,3 +70,20 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+class Category(TrackingModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class Sub_Category(TrackingModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
