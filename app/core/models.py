@@ -5,6 +5,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
+from django.conf import settings
 from helpers.models import TrackingModel
 import uuid
 
@@ -84,6 +85,39 @@ class Sub_Category(TrackingModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class Item(TrackingModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    is_available = models.BooleanField(default=True)
+    condition = models.CharField(max_length=255, choices=[
+        ('New', 'New'),
+        ('Old', 'Old'),
+        ('Used', 'Used'),
+        ('Used(Like New)', 'Used(Like New)'),
+    ])
+    description = models.CharField(max_length=255)
+    display_image_path = models.CharField(max_length=255)
+    isFree = models.BooleanField(default=False)
+    name = models.CharField(max_length=255)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    sub_category = models.ForeignKey('Sub_Category', on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    short_info = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    status = models.CharField(max_length=255, choices=[
+        ('Active', 'Active'),
+        ('Draft', 'Draft'),
+        ('Swapped', 'Swapped'),
+    ])
+    version = models.CharField(max_length=255)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
 
     def __str__(self):
         return self.name

@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from core.models import UserType
 from core import models
 from django.urls import reverse
+from rest_framework.test import APIClient
 
 CREATE_USER_URL = reverse('user:create')
 
@@ -181,48 +182,53 @@ class ModelTests(TestCase):
 
         self.assertEqual(str(sub_category), sub_category.name)
 
-    # def test_create_item(self):
-    #     """Test for creating an item."""
-    #     usertype = UserType.objects.create(name='User')
-    #     payload = {
-    #         'email': 'test@example.com',
-    #         'password': 'testpass123',
-    #         'first_name': 'Test',
-    #         'last_name': 'User',
-    #         'birth_date': '08/18/1999',
-    #         'gender': 'Male',
-    #         'phone_number': '1211231',
-    #         'cover_photo_path': 'test_cover',
-    #         'profile_image_path': 'test_image',
-    #         'bio': 'test_bio',
-    #         'city': 'test_city',
-    #         'address': 'test_address',
-    #         'country': 'test_country',
-    #         'state': 'test_state',
-    #         'street': 'test_street',
-    #         'zip_code': '8000',
-    #         'verification_code': '12112',
-    #         'user_type': usertype,
-    #     }
-    #     user = get_user_model().objects.create_user(**payload)
-    #     category = models.Category.objects.create(name="Computer Parts")
-    #     sub_category = models.Sub_Category.objects.create(
-    #         category=category,
-    #         name='Hard Drive'
-    #     )
-    #     item = models.Item.objects.create(
-    #         isAvailable=True,
-    #         condition='New',
-    #         description='New item open for swap',
-    #         image_path='images/RTX.jpeg',
-    #         isFree=False,
-    #         name='RTX 1000-Test',
-    #         category=category,
-    #         sub_category=sub_category,
-    #         price=10000,
-    #         short_info='test product',
-    #         state='test state',
-    #         status='Active',
-    #         version="1.3",
-    #         user=user,
-    #     )
+    def setUp(self):
+        self.client = APIClient()
+        usertype = UserType.objects.create(name='User')
+        payload = {
+            'email': 'nayeonnyny@example.com',
+            'password': 'testpass123',
+            'first_name': 'Test',
+            'last_name': 'User',
+            'birth_date': '08/18/1999',
+            'gender': 'Male',
+            'phone_number': '1211231',
+            'cover_photo_path': 'test_cover',
+            'profile_image_path': 'test_image',
+            'bio': 'test_bio',
+            'city': 'test_city',
+            'address': 'test_address',
+            'country': 'test_country',
+            'state': 'test_state',
+            'street': 'test_street',
+            'zip_code': '8000',
+            'verification_code': '12112',
+            'user_type': usertype,
+        }
+        self.user = get_user_model().objects.create_user(**payload)
+        self.category = models.Category.objects.create(name="Computer Parts")
+        self.sub_category = models.Sub_Category.objects.create(
+            category=self.category,
+            name='Hard Drive'
+        )
+
+    def test_create_item(self):
+        """Test for creating an item is successful."""
+        item = models.Item.objects.create(
+            is_available=False,
+            condition='New',
+            description='Test Description',
+            display_image_path='media/test.png',
+            isFree=False,
+            name='Test Item',
+            category=self.category,
+            sub_category=self.sub_category,
+            price='20.99',
+            short_info='Test info',
+            state='Test state',
+            status='Active',
+            version='1.3',
+            user=self.user
+        )
+
+        self.assertEqual(str(item), item.name)
