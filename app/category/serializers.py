@@ -15,7 +15,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class CategoryDetailSerializer(CategorySerializer):
-    """Serializer for recipe detail view."""
+    """Serializer for category detail view."""
 
     class Meta(CategorySerializer.Meta):
         fields = CategorySerializer.Meta.fields

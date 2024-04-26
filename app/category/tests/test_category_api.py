@@ -16,12 +16,12 @@ CATEGORY_URL = reverse('category:category-list')
 
 
 def detail_url(category_id):
-    """Create and return a recipe detail URL."""
+    """Create and return a category detail URL."""
     return reverse('category:category-detail', args=[category_id])
 
 
 def create_category(**params):
-    """Create and return a sample recipe."""
+    """Create and return a sample category."""
     defaults = {
         'name': 'Sample Category Name',
     }
@@ -38,7 +38,7 @@ class PublicCategoryAPITests(TestCase):
         self.client = APIClient()
 
     def test_retrieve_categories(self):
-        """Test for retrieving a list of recipes."""
+        """Test for retrieving a list of categories."""
         create_category()
         create_category(name='Test 2 Category')
 
@@ -93,9 +93,7 @@ class PublicCategoryAPITests(TestCase):
         """Test when deleting a category."""
         category_data = {'name': 'Test Category'}
         create_response = self.client.post(
-            CATEGORY_URL,
-            category_data,
-            format='json')
+            CATEGORY_URL, category_data, format='json')
         self.assertEqual(create_response.status_code, 201)
         created_category_id = create_response.data['id']
 

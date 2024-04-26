@@ -29,5 +29,6 @@ urlpatterns = [
         name='api-docs'
     ),
     path('api/user/', include('user.urls')),
-    path('api/category/', include('category.urls'))
+    path('api/category/', include('category.urls')),
+    path('api/sub_category/', include('sub_category.urls')),
 ]
