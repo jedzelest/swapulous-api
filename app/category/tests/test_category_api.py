@@ -48,6 +48,7 @@ class PublicCategoryAPITests(TestCase):
         serializer = CategorySerializer(categories, many=True)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res.data, serializer.data)
+        self.assertTrue('sub_categories', res.data)
 
     def test_get_category_detail(self):
         """Test get category detail."""
@@ -58,6 +59,7 @@ class PublicCategoryAPITests(TestCase):
 
         serializer = CategoryDetailSerializer(category)
         self.assertEqual(res.data, serializer.data)
+        self.assertIn('sub_categories', res.data)
 
     def test_create_category(self):
         """Test creating a category."""

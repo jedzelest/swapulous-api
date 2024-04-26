@@ -3,14 +3,17 @@ Serializers for category APIs.
 """
 from rest_framework import serializers
 from core.models import Category
+from sub_category.serializers import SubCategorySerializer
 
 
 class CategorySerializer(serializers.ModelSerializer):
     """Serializer for Categories."""
 
+    sub_categories = SubCategorySerializer(many=True, read_only=True)
+
     class Meta:
         model = Category
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'sub_categories']
         read_only_fields = ['id']
 
 
