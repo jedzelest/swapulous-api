@@ -16,5 +16,12 @@ class ItemSerializer(serializers.ModelSerializer):
                   'description', 'display_image_path',
                   'isFree', 'name', 'category', 'sub_category',
                   'price', 'short_info', 'state', 'status',
-                  'version', 'user']
+                  'version']
         read_only_fields = ['id']
+
+
+class ItemDetailSerializer(ItemSerializer):
+    """Serializer for item detail view."""
+
+    class Meta(ItemSerializer.Meta):
+        fields = ItemSerializer.Meta.fields

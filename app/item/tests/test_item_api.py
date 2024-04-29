@@ -9,10 +9,16 @@ from rest_framework.test import APIClient
 from core.models import Item, Category, Sub_Category, UserType
 from item.serializers import (
     ItemSerializer,
+    ItemDetailSerializer,
 )
 
 
 ITEM_URL = reverse('item:item-list')
+
+
+def detail_url(item_id):
+    """Create and return an item detail URL."""
+    return reverse('item:item-detail', args=[item_id])
 
 
 def create_item(user, **params):
@@ -129,4 +135,14 @@ class PrivateItemAPITests(TestCase):
         items = Item.objects.filter(user=self.user)
         serializer = ItemSerializer(items, many=True)
         self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.data, serializer.data)
+
+    def test_get_item_detail(self):
+        """Test get item detail."""
+        item = create_item(user=self.user)
+
+        url = detail_url(item.id)
+        res = self.client.get(url)
+
+        serializer = ItemDetailSerializer(item)
         self.assertEqual(res.data, serializer.data)
