@@ -101,7 +101,7 @@ class Item(TrackingModel):
         ('Used', 'Used'),
         ('Used(Like New)', 'Used(Like New)'),
     ])
-    description = models.CharField(max_length=255)
+    description = models.TextField(max_length=255)
     display_image_path = models.CharField(max_length=255)
     isFree = models.BooleanField(default=False)
     name = models.CharField(max_length=255)

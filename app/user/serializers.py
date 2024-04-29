@@ -16,10 +16,11 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = [
-            'email', 'password', 'first_name', 'last_name',
+            'id', 'email', 'password', 'first_name', 'last_name',
             'birth_date', 'gender', 'phone_number', 'cover_photo_path',
             'profile_image_path', 'bio', 'city', 'address', 'country',
             'state', 'street', 'zip_code', 'verification_code', 'user_type']
+        read_only_fields = ['id']
         extra_kwargs = {'password': {'write_only': True, 'min_length': 5}}
 
     def create(self, validated_data):
