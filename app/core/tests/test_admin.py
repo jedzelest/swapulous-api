@@ -1,4 +1,6 @@
-# TESTS for the Django admin modifications
+"""
+TESTS for the Django admin modifications
+"""
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -7,7 +9,7 @@ from core.models import UserType
 
 
 class AdminSiteTests(TestCase):
-    # tests for django admin
+    """Tests for django admin"""
 
     def setUp(self):
         """ Create user and client. """
