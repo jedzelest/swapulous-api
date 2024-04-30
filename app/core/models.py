@@ -8,6 +8,15 @@ from django.contrib.auth.models import (
 from django.conf import settings
 from helpers.models import TrackingModel
 import uuid
+import os
+
+
+def item_image_file_path(instance, filename):
+    """Generate file path for new item image."""
+    ext = os.path.splitext(filename)[1]
+    filename = f'{uuid.uuid4()}{ext}'
+
+    return os.path.join('uploads', 'item', filename)
 
 
 class UserManager(BaseUserManager):
@@ -102,7 +111,7 @@ class Item(TrackingModel):
         ('Used(Like New)', 'Used(Like New)'),
     ])
     description = models.TextField(max_length=255)
-    display_image_path = models.CharField(max_length=255)
+    image = models.ImageField(null=True, upload_to=item_image_file_path)
     isFree = models.BooleanField(default=False)
     name = models.CharField(max_length=255)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)

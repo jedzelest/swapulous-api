@@ -1,6 +1,8 @@
 """
 Tests for the Item APIs.
 """
+import tempfile
+import os
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -11,6 +13,7 @@ from item.serializers import (
     ItemSerializer,
     ItemDetailSerializer,
 )
+from PIL import Image
 
 
 ITEM_URL = reverse('item:item-list')
@@ -19,6 +22,11 @@ ITEM_URL = reverse('item:item-list')
 def detail_url(item_id):
     """Create and return an item detail URL."""
     return reverse('item:item-detail', args=[item_id])
+
+
+def image_upload_url(item_id):
+    """Create and return an image upload URL."""
+    return reverse('item:item-upload-image', args=[item_id])
 
 
 def create_item(user, **params):
@@ -32,7 +40,6 @@ def create_item(user, **params):
         'is_available': True,
         'condition': 'New',
         'description': 'Test Description',
-        'display_image_path': 'path/samples/sample.jpeg',
         'isFree': False,
         'name': 'Sample Item Name',
         'category': category,
@@ -146,3 +153,60 @@ class PrivateItemAPITests(TestCase):
 
         serializer = ItemDetailSerializer(item)
         self.assertEqual(res.data, serializer.data)
+
+
+class ImageUploadTests(TestCase):
+    """Test for the image upload API."""
+
+    def setUp(self):
+        self.client = APIClient()
+        usertype = UserType.objects.create(name='User')
+        user_details = {
+            'email': 'test@example.com',
+            'password': 'testpass123',
+            'first_name': 'Test',
+            'last_name': 'User',
+            'birth_date': '08/18/1999',
+            'gender': 'Male',
+            'phone_number': '1211231',
+            'cover_photo_path': 'test_cover',
+            'profile_image_path': 'test_image',
+            'bio': 'test_bio',
+            'city': 'test_city',
+            'address': 'test_address',
+            'country': 'test_country',
+            'state': 'test_state',
+            'street': 'test_street',
+            'zip_code': '8000',
+            'verification_code': '12112',
+            'user_type': usertype,
+        }
+        self.user = get_user_model().objects.create(**user_details)
+        self.client.force_authenticate(self.user)
+        self.item = create_item(user=self.user)
+
+    def tearDown(self):
+        self.item.image.delete()
+
+    def test_upload_image(self):
+        """Test uploading an image to an item."""
+        url = image_upload_url(self.item.id)
+        with tempfile.NamedTemporaryFile(suffix='.jpg') as image_file:
+            img = Image.new('RGB', (10, 10))
+            img.save(image_file, format='JPEG')
+            image_file.seek(0)
+            payload = {'image': image_file}
+            res = self.client.post(url, payload, format='multipart')
+
+        self.item.refresh_from_db()
+        self.assertEqual(res.status_code, 200)
+        self.assertIn('image', res.data)
+        self.assertTrue(os.path.exists(self.item.image.path))
+
+    def test_upload_image_bad_request(self):
+        """Test uploading invalid image."""
+        url = image_upload_url(self.item.id)
+        payload = {'image': 'notanimage'}
+        res = self.client.post(url, payload, format='multipart')
+
+        self.assertEqual(res.status_code, 400)
