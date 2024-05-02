@@ -223,6 +223,32 @@ class ModelTests(TestCase):
 
         self.assertEqual(str(item), item.name)
 
+    def test_create_review(self):
+        """Test for creating a review is successful."""
+        item = models.Item.objects.create(
+            is_available=False,
+            condition='New',
+            description='Test Description',
+            isFree=False,
+            name='Test Item',
+            category=self.category,
+            sub_category=self.sub_category,
+            price='20.99',
+            short_info='Test info',
+            state='Test state',
+            status='Active',
+            version='1.3',
+            user=self.user
+        )
+        review = models.Review.objects.create(
+            comment='Test Comment',
+            item=item,
+            rating="10",
+            user=self.user,
+        )
+
+        self.assertEqual(str(review), review.comment)
+
     @patch('core.models.uuid.uuid4')
     def test_item_file_name_uuid(self, mock_uuid):
         """Test generating image path."""

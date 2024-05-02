@@ -144,3 +144,17 @@ class Item(TrackingModel):
 
     def __str__(self):
         return self.name
+
+
+class Review(TrackingModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    comment = models.TextField(max_length=255)
+    item = models.ForeignKey('Item', on_delete=models.CASCADE)
+    rating = models.CharField(max_length=20)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return self.comment
