@@ -21,6 +21,14 @@ def item_image_file_path(instance, filename):
     return os.path.join('uploads', 'item', filename)
 
 
+def user_images_file_path(instance, filename):
+    """Generate file path for user images."""
+    ext = os.path.splitext(filename)[1]
+    filename = f'{uuid.uuid4()}{ext}'
+
+    return os.path.join('uploads', 'user', filename)
+
+
 class UserManager(BaseUserManager):
     """Manager for users."""
 
@@ -62,8 +70,10 @@ class User(AbstractBaseUser, PermissionsMixin, TrackingModel):
     birth_date = models.CharField(max_length=255)
     gender = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=255)
-    cover_photo_path = models.CharField(max_length=255)
-    profile_image_path = models.CharField(max_length=255)
+    cover_photo = models.ImageField(
+        null=True, upload_to=user_images_file_path)
+    profile_image = models.ImageField(
+        null=True, upload_to=user_images_file_path)
     bio = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     address = models.CharField(max_length=255)

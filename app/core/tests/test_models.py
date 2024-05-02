@@ -26,8 +26,6 @@ class ModelTests(TestCase):
             'birth_date': '08/18/1999',
             'gender': 'Male',
             'phone_number': '1211231',
-            'cover_photo_path': 'test_cover',
-            'profile_image_path': 'test_image',
             'bio': 'test_bio',
             'city': 'test_city',
             'address': 'test_address',
@@ -55,8 +53,6 @@ class ModelTests(TestCase):
             'birth_date': '08/18/1999',
             'gender': 'Male',
             'phone_number': '1211231',
-            'cover_photo_path': 'test_cover',
-            'profile_image_path': 'test_image',
             'bio': 'test_bio',
             'city': 'test_city',
             'address': 'test_address',
@@ -91,8 +87,6 @@ class ModelTests(TestCase):
             'birth_date': '08/18/1999',
             'gender': 'Male',
             'phone_number': '1211231',
-            'cover_photo_path': 'test_cover',
-            'profile_image_path': 'test_image',
             'bio': 'test_bio',
             'city': 'test_city',
             'address': 'test_address',
@@ -118,8 +112,6 @@ class ModelTests(TestCase):
             'birth_date': '08/18/1999',
             'gender': 'Male',
             'phone_number': '1211231',
-            'cover_photo_path': 'test_cover',
-            'profile_image_path': 'test_image',
             'bio': 'test_bio',
             'city': 'test_city',
             'address': 'test_address',
@@ -145,8 +137,6 @@ class ModelTests(TestCase):
             'birth_date': '08/18/1999',
             'gender': 'Male',
             'phone_number': '1211231',
-            'cover_photo_path': 'test_cover',
-            'profile_image_path': 'test_image',
             'bio': 'test_bio',
             'city': 'test_city',
             'address': 'test_address',
@@ -196,8 +186,6 @@ class ModelTests(TestCase):
             'birth_date': '08/18/1999',
             'gender': 'Male',
             'phone_number': '1211231',
-            'cover_photo_path': 'test_cover',
-            'profile_image_path': 'test_image',
             'bio': 'test_bio',
             'city': 'test_city',
             'address': 'test_address',
@@ -243,3 +231,12 @@ class ModelTests(TestCase):
         file_path = models.item_image_file_path(None, 'example.jpg')
 
         self.assertEqual(file_path, f'uploads/item/{uuid}.jpg')
+
+    @patch('core.models.uuid.uuid4')
+    def test_user_file_name_uuid(self, mock_uuid):
+        """Test generating image path."""
+        uuid = 'test-uuid'
+        mock_uuid.return_value = uuid
+        file_path = models.user_images_file_path(None, 'example.jpg')
+
+        self.assertEqual(file_path, f'uploads/user/{uuid}.jpg')

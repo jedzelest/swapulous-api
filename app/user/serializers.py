@@ -17,15 +17,22 @@ class UserSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = [
             'id', 'email', 'password', 'first_name', 'last_name',
-            'birth_date', 'gender', 'phone_number', 'cover_photo_path',
-            'profile_image_path', 'bio', 'city', 'address', 'country',
-            'state', 'street', 'zip_code', 'verification_code', 'user_type']
+            'birth_date', 'gender', 'phone_number', 'bio', 'city',
+            'address', 'country', 'state', 'street', 'zip_code',
+            'verification_code', 'user_type', 'cover_photo', 'profile_image']
         read_only_fields = ['id']
         extra_kwargs = {'password': {'write_only': True, 'min_length': 5}}
 
     def create(self, validated_data):
-        """Create and return a user with encrypted password."""
-        return get_user_model().objects.create_user(**validated_data)
+        cover_photo = validated_data.pop('cover_photo', None)
+        profile_image = validated_data.pop('profile_image', None)
+        user = get_user_model().objects.create_user(**validated_data)
+        if cover_photo:
+            user.cover_photo = cover_photo
+        if profile_image:
+            user.profile_image = profile_image
+        user.save()
+        return user
 
     def update(self, instance, validated_data):
         """Update and return user."""
@@ -43,6 +50,19 @@ class UserSerializer(serializers.ModelSerializer):
         user = self.get_object()
         user.delete()
         return Response({"message": "User deleted successfully"}, status=204)
+
+
+class UserImageSerializer(serializers.ModelSerializer):
+    """Serializer for uploading image to users."""
+
+    class Meta:
+        model = get_user_model()
+        fields = ['id', 'cover_photo', 'profile_image']
+        read_only_fields = ['id']
+        extra_kwargs = {
+            'cover_photo': {'required': True},
+            'profile_image': {'required': True},
+        }
 
 
 class AuthTokenSerializer(serializers.Serializer):
