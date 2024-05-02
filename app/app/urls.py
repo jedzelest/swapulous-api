@@ -34,6 +34,7 @@ urlpatterns = [
     path('api/category/', include('category.urls')),
     path('api/sub_category/', include('sub_category.urls')),
     path('api/item/', include('item.urls')),
+    path('api/review/', include('review.urls')),
 ]
 
 if settings.DEBUG:

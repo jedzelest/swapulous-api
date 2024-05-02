@@ -17,14 +17,14 @@ class ItemSerializer(serializers.ModelSerializer):
                   'category', 'sub_category',
                   'price', 'short_info', 'state', 'status',
                   'version']
-        read_only_fields = ['id']
+        read_only_fields = ['id', 'user']
 
 
 class ItemDetailSerializer(ItemSerializer):
     """Serializer for item detail view."""
 
     class Meta(ItemSerializer.Meta):
-        fields = ItemSerializer.Meta.fields + ['image']
+        fields = ItemSerializer.Meta.fields + ['image', 'user']
 
 
 class ItemImageSerializer(serializers.ModelSerializer):
