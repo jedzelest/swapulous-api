@@ -12,9 +12,10 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ['id', 'comment', 'item', 'rating', 'user']
+        fields = ['id', 'comment', 'item', 'rating']
         read_only_fields = ['id']
-    
+
+
 class ReviewDetailSerializer(ReviewSerializer):
     """Serializer view for detail review."""
 

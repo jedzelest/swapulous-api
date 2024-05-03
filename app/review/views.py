@@ -3,12 +3,10 @@ Views for the review APIs.
 """
 
 from rest_framework import viewsets
-from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from core.models import (
-    Item,
     Review,
 )
 from review import serializers
@@ -16,7 +14,7 @@ from review import serializers
 
 class ReviewViewSet(viewsets.ModelViewSet):
     """View manage Review APIs."""
-    serializer_class = serializers.ReviewSerializer
+    serializer_class = serializers.ReviewDetailSerializer
     queryset = Review.objects.all()
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
