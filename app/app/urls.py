@@ -35,6 +35,7 @@ urlpatterns = [
     path('api/sub_category/', include('sub_category.urls')),
     path('api/item/', include('item.urls')),
     path('api/review/', include('review.urls')),
+    path('api/chat_connection/', include('chat_connection.urls')),
 ]
 
 if settings.DEBUG:
