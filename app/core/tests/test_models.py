@@ -266,3 +266,72 @@ class ModelTests(TestCase):
         file_path = models.user_images_file_path(None, 'example.jpg')
 
         self.assertEqual(file_path, f'uploads/user/{uuid}.jpg')
+
+    def test_create_chat_connection(self):
+        """Test for creating a chat connection is successful."""
+        usertype = UserType.objects.create(name='User')
+        payload = {
+            'email': 'sender@example.com',
+            'password': 'testpass123',
+            'first_name': 'Test',
+            'last_name': 'User',
+            'birth_date': '08/18/1999',
+            'gender': 'Female',
+            'phone_number': '1211231',
+            'bio': 'test_bio',
+            'city': 'test_city',
+            'address': 'test_address',
+            'country': 'test_country',
+            'state': 'test_state',
+            'street': 'test_street',
+            'zip_code': '8000',
+            'verification_code': '12112',
+            'user_type': usertype,
+        }
+        sender = get_user_model().objects.create_user(**payload)
+        payload_2 = {
+            'email': 'receiver@example.com',
+            'password': 'testpass123',
+            'first_name': 'Test',
+            'last_name': 'User',
+            'birth_date': '08/18/1999',
+            'gender': 'Male',
+            'phone_number': '1211231',
+            'bio': 'test_bio',
+            'city': 'test_city',
+            'address': 'test_address',
+            'country': 'test_country',
+            'state': 'test_state',
+            'street': 'test_street',
+            'zip_code': '8000',
+            'verification_code': '12112',
+            'user_type': usertype,
+        }
+        receiver = get_user_model().objects.create_user(**payload_2)
+        category = models.Category.objects.create(name="Computer Parts")
+        sub_category = models.Sub_Category.objects.create(
+            category=category,
+            name='Hard Drive'
+        )
+        item = models.Item.objects.create(
+            is_available=False,
+            condition='New',
+            description='Test Description',
+            isFree=False,
+            name='Test Item',
+            category=category,
+            sub_category=sub_category,
+            price='20.99',
+            short_info='Test info',
+            state='Test state',
+            status='Active',
+            version='1.3',
+            user=sender
+        )
+        chat_conn = models.Chat_Connection.objects.create(
+            item=item,
+            sender=sender,
+            receiver=receiver,
+        )
+
+        self.assertEqual(str(chat_conn), chat_conn.item.name)
