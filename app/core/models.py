@@ -177,3 +177,30 @@ class Review(TrackingModel):
 
     def __str__(self):
         return self.comment
+
+
+class Message(TrackingModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    content = models.TextField(max_length=255)
+    status = models.CharField(max_length=255, choices=[
+        ('Sent', 'Sent'),
+        ('Delivered', 'Delivered'),
+    ])
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='message_sender',
+        on_delete=models.CASCADE,
+    )
+    receiver = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='message_receiver',
+        on_delete=models.CASCADE,
+    )
+    chat_connection = models.ForeignKey(
+        'Chat_Connection',
+        related_name='chat_connection',
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return self.sender.first_name
