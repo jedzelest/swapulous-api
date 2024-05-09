@@ -6,7 +6,7 @@ from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from core.models import Message
+from core.models import Message, Chat_Connection
 from message import serializers
 
 
@@ -18,6 +18,10 @@ class MessageViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
+        chat_connection_id = self.request.data.get('chat_connection') # noqa
+        receiver_id = self.request.data.get('receiver')
+        chat_connections = Chat_Connection.objects.filter(receiver=receiver_id) # noqa
+
         serializer.save(sender=self.request.user)
 
     def get_queryset(self):
