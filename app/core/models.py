@@ -191,11 +191,6 @@ class Message(TrackingModel):
         related_name='message_sender',
         on_delete=models.CASCADE,
     )
-    receiver = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        related_name='message_receiver',
-        on_delete=models.CASCADE,
-    )
     chat_connection = models.ForeignKey(
         'Chat_Connection',
         related_name='chat_connection',

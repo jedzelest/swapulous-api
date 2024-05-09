@@ -406,7 +406,6 @@ class ModelTests(TestCase):
             content='Test Content',
             status='Sent',
             sender=sender,
-            receiver=receiver,
             chat_connection=chat_conn,
         )
 
