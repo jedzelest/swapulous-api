@@ -410,3 +410,28 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(message), message.sender.first_name)
+
+    def test_creating_images(self):
+        """Test for creating item images model successful."""
+
+        item = models.Item.objects.create(
+            is_available=False,
+            condition='New',
+            description='Test Description',
+            isFree=False,
+            name='Test Item',
+            category=self.category,
+            sub_category=self.sub_category,
+            price='20.99',
+            short_info='Test info',
+            state='Test state',
+            status='Active',
+            version='1.3',
+            user=self.user
+        )
+
+        item_image = models.ItemImage.objects.create(
+            item=item,
+        )
+
+        self.assertEqual(str(item_image), item_image.item.name)

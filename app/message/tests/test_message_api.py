@@ -11,10 +11,6 @@ from core.models import UserType
 MESSAGE_URL = reverse('message:message-list')
 
 
-def create_message(user, **params):
-    """Create and return a message object instance."""
-
-
 class PublicMessageAPITests(TestCase):
     """Test unauthenticated API requests."""
 
