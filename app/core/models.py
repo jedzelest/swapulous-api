@@ -146,15 +146,6 @@ class Item(TrackingModel):
         return self.name
 
 
-class ItemImage(TrackingModel):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    image = models.ImageField(null=True, upload_to=item_image_file_path)
-    item = models.ForeignKey('Item', related_name='item_images', on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.item.name
-
-
 class Chat_Connection(TrackingModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     item = models.ForeignKey('Item', on_delete=models.CASCADE)
@@ -208,3 +199,12 @@ class Message(TrackingModel):
 
     def __str__(self):
         return self.sender.first_name
+
+
+class ItemImage(TrackingModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    image = models.ImageField(null=True, upload_to=item_image_file_path)
+    item = models.ForeignKey('Item', related_name='item_images', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.item.name
