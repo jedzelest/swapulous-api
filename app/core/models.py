@@ -205,6 +205,10 @@ class ItemImage(TrackingModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     image = models.ImageField(null=True, upload_to=item_image_file_path)
     item = models.ForeignKey('Item', related_name='item_images', on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
 
     def __str__(self):
         return self.item.name

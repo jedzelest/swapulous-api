@@ -432,6 +432,7 @@ class ModelTests(TestCase):
 
         item_image = models.ItemImage.objects.create(
             item=item,
+            user=self.user,
         )
 
         self.assertEqual(str(item_image), item_image.item.name)

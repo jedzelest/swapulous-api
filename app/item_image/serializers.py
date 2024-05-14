@@ -11,5 +11,5 @@ class ImagesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ItemImage
-        fields = ['id', 'image', 'item']
-        read_only_fields = ['id']
+        fields = ['id', 'image', 'item', 'user']
+        read_only_fields = ['id', 'user']

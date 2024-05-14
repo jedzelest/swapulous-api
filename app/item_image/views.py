@@ -17,6 +17,10 @@ class ItemImageViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
+    def perform_create(self, serlializer):
+        """Override creation of item images."""
+        serlializer.save(user=self.request.user)
+
     def get_queryset(self):
         """Retrieve item images for authenticated user."""
-        return self.queryset.order_by('-id')
+        return self.queryset.filter(user=self.request.user).order_by('-id')
